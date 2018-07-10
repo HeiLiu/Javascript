@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>javascript扩展内建对象</title>
+</head>
+<body>
+    <script>
+        //给内建对象String 的原型上添加reverse方法
+        String.prototype.reverse = function(){
+            return Array.prototype.reverse.apply(this.split('')).join('');
+        }
+        console.log('liujianglong'.reverse());
+
+
+        //检测方法是否存在，不存在则扩展
+        if(!Array.prototype.inArray){
+            Array.prototype.inArray = function(needle){
+                for(var i =0,len= this.length;i<len;i++){
+                    if(this[i] == needle){
+                        // 如果存在 返回下标位置
+                        return i;
+                    }
+                }
+            }
+        }
+        var arr=['a','s','d'];
+        console.log(arr.inArray('s'));
+    </script>
+</body>
+</html>

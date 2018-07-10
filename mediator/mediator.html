@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>中介者模式 买手机咯</title>
+</head>
+
+<body>
+    <!-- 品牌 内存 颜色 数量 => 库存判断
+    选择颜色 -->
+    选择品牌：
+    <select name="" id="brandSelect">
+        <option value="iphone6">iphone6</option>
+        <option value="huaweiP10">华为</option>
+        <option value="mi">小米</option>
+    </select>
+    选择颜色：
+    <select name="" id="colorSelect">
+        <option value="red">红色</option>
+        <option value="blue">蓝色</option>
+        <option value="black">黑色</option>
+    </select>
+    选择内存：
+    <select name="" id="memorySelect">
+        <option value="16G">16G</option>
+        <option value="32G">32G</option>
+        <option value="64G">64G</option>
+    </select>
+    <br>
+    <label for="">输入购买数量
+        <input type="text" id="numberInput" placeholder="1">
+    </label>
+    您选择的品牌：
+    <div id="brandInfo"></div>
+    <br>
+    <br> 您选择的颜色：
+    <div id="colorInfo"></div>
+    <br>您选择的内存：
+    <div id="memoryInfo"></div>
+    <br> 您选择了数量：
+    <div id="numberInfo"></div>
+    <br>
+    <button id="nextBtn" disabled="true">请选择手机颜色和数量</button>
+    <script>
+        // 颜色 内存 品牌 一次去做check
+        // 多一个条件 得去改所有跟最后结果相关的地方
+        // 事情太多，可能搞不定，交给别人搞 引入中介者模式
+        const goods = {
+            "red|16G|iphone6": 2,
+            "red|32G|iphone6": 6,
+            "red|64G|iphone6": 3,
+            "blue|16G|iphone6": 2,
+            "blue|32G|iphone6": 4,
+            "blue|64G|iphone6": 3,
+            "black|16G|iphone6": 2,
+            "black|32G|iphone6":6,
+            "black|64G|iphone6": 3,
+            "red|16G|mi": 2,
+            "red|32G|mi": 6,
+            "red|64G|mi": 8,
+            "blue|16G|mi": 2,
+            "blue|32G|mi": 6,
+            "black|64G|mi": 8,
+            "black|16G|mi": 2,
+            "black|32G|mi": 6,
+            "blue|64G|mi": 8,
+            "red|16G|huaweiP10": 2,
+            "red|32G|huaweiP10": 2,
+            "red|64G|huaweiP10": 8,
+            "blue|16G|huaweiP10": 2,
+            "blue|32G|huaweiP10": 2,
+            "blue|64G|huaweiP10": 8,
+            "black|16G|huaweiP10": 2,
+            "black|32G|huaweiP10": 2,
+            "black|64G|huaweiP10": 8
+        };
+
+
+        const mediator = (function () {
+            const colorSelect = document.querySelector('#colorSelect'),
+                brandSelect = document.querySelector('#brandSelect'),
+                memorySelect = document.querySelector('#memorySelect'),
+                numInput = document.querySelector('#numberInput'),
+                colorInfo = document.querySelector('#colorInfo'),
+                numInfo = document.querySelector('#numberInfo'),
+                memoryInfo = document.querySelector('#memoryInfo'),
+                brandInfo = document.querySelector('#brandInfo');
+            nextBtn = document.querySelector('#nextBtn');
+            // 共同点：得到所有的值
+            //     所有的check  
+            //     改变btn
+            // 存在差异性 设置相应的info值为value
+            brandSelect.onchange = function () {
+                mediator.changed(this);
+            }
+            colorSelect.onchange = function () {
+                mediator.changed(this);
+            }
+            memorySelect.onchange = function () {
+                mediator.changed(this);
+            }
+            numInput.oninput = function () {
+                mediator.changed(this);
+            }
+
+            return {
+                changed: function (obj) {
+                    // 中介者模式，让我们将复杂的情况收纳至一个中介者对象，之后，新的情况新的处理 都将集中在changed一处
+                    // console.log(obj);
+                    let color = colorSelect.value,
+                        brand = brandSelect.value,
+                        memory = memorySelect.value,
+                        number = numInput.value;
+                    // 再多情况 改一处地方
+                    if (obj === colorSelect) {
+                        // 或者 obj.id === colorSelector
+                        colorInfo.innerHTML = color;
+                    } else if (obj === memorySelect) {
+                        memoryInfo.innerHTML = memory;
+                    } else if (obj === numInput) {
+                        numInfo.innerHTML = number;
+                    } else if(obj === brandSelect) {
+                        brandInfo.innerHTML = brand;
+                    }
+                    if (!brand) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = '请选择手机品牌';
+                        return;
+                    }
+                    if (!color) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = '请选择手机颜色';
+                        return;
+                    }
+                    if (!memory) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = '请选择手机内存';
+                        return;
+                    }
+                    if (!number || !Number.isInteger(parseInt(number)) || parseInt(number) <= 0) {
+                        console.log('输入正确的购买数量');
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = '请输入正确的购买数量';
+                        return;
+                    }
+                    let stock = goods[`${color}|${memory}|${brand}`];
+                    if (number > stock) {
+                        nextBtn.disabled = true;
+                        nextBtn.innerHTML = '库存不足';
+                        return;
+                    }
+                    nextBtn.disabled = false;
+                    nextBtn.innerHTML = '收入购物车';
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>

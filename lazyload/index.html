@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>懒加载图片</title>
+</head>
+
+<body>
+    <!-- 网页在渲染的时候，
+    chrome性能最好 同时并发的请求数十几个
+    将图片下载放在DOM Ready 之后 将有效提升网页加载速度
+    占位图片，
+
+    优化前：此时页面中有n张照片 url不一样 http请求数是n
+    优化后： 图片上的http请求数量只有1
+    如果url一样 不会重复发送请求
+ -->
+    <img class="pic1" src="http://static.youku.com/yk/vmanage/img/manage/video/mask.d53611efc6.png" origin_src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy3Q9PaV8pf5K93Ho86qqIA011pbMesKyksp_YE8ZDwB8XZrW5"
+        alt="">
+    <img class="pic2" src="http://static.youku.com/yk/vmanage/img/manage/video/mask.d53611efc6.png" origin_src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqt3P5-1-WphsUWnUGbpjphmZrk7zCPcOsjNVlaa48dX83h-b5"
+        alt="">
+    <img class="pic3" src="http://static.youku.com/yk/vmanage/img/manage/video/mask.d53611efc6.png" origin_src="https://gss0.baidu.com/-fo3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/3c6d55fbb2fb4316cbfbc71929a4462308f7d3e9.jpg"
+        alt="">
+    <script src="./lazyload.js"></script>
+    <script>
+        //   已经是用户看到的网页了 dom ready
+        // 优化图片下载 将其推后
+        window.onload = function () {
+            const img = document.querySelector('.pic1');
+            LazyLoadImage.setSrc(img);
+            // 懒加载图片
+//  
+//             //   在页面打开后 重新下载图片
+//             // origin_src 自定义属性
+//             const url = img.getAttribute('origin_src');
+//             // console.log(url);
+//             // 图片不要直接url设置过去 
+//             const oImg = document.createElement('img');
+//             oImg.style.display = 'none';
+//             document.body.appendChild(oImg);
+//             oImg.onload = function () {
+//                 // 图片加载完成触发onload事件
+//                 // 幕后工作者已经将图片从服务器请求过来
+//                 // url一旦下载， 在浏览器缓存（静态）文件
+//             // img.setAttribute('src',url);
+//                 img.src = url;
+//                 oImg.style.display = 'inline-block'
+//             }
+//             // 图片的下载是异步的 因为图片大小不一
+//             oImg.src = url; 
+        }
+    </script>
+</body>
+
+</html>

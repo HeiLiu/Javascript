@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hei小家</title>
+</head>
+
+<body>
+    <div id="user">
+        <img src="" alt="" id="avatar">
+        <p id="username"></p>
+    </div>
+    <form action="" name="userForm">
+        <div class="field">
+            <label>头像
+                <input type="text" name="avatar" id="avatarInput">
+            </label>
+            <br>
+            <label>昵称
+                <input type="text" name="username" id="username">
+            </label>
+        </div>
+    </form>
+    <script>
+        const user_id = 10001;
+        const URL = 'https://easy-mock.com/mock/5adf04945cbcb66de34da5ae/students/userInfo#!method=get';
+        // fetch(URL)
+        //     .then(data => data.json())
+        //     .then(data => {
+        //         console.log(data);
+        //         renderUserInfo(data);
+        //     })
+        getData(URL, fillUserInfo, renderUserInfo);
+        // renderUserInfo(data);
+        function getData(url, ...fn) {
+            fetch(url).then(data => data.json())
+                .then(data => {
+                    // renderUserInfo(data);
+                    // fn(data);
+                    fn.forEach(func => {
+                        func(data);
+                    })
+                })
+        }
+
+        function renderUserInfo(data) {
+            document.querySelector('#avatar').src = data.data.avatar;
+            document.querySelector('#username').innerHTML = data.data.username;
+        }
+
+        function fillUserInfo(data) {
+            const oForm = document.forms['userForm'];
+            const avatarInput = oForm['avatarInput'];
+            const usernameInput = oForm['username'];
+            avatarInput.value = data.data.avatar;
+            usernameInput.value = data.data.username;
+        }
+    </script>
+</body>
+
+</html>
