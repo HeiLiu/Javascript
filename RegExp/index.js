@@ -24,4 +24,12 @@
 // console.log(str.replace(reg, '***'))
 
 // []
-const str = "apc bpc dpc cpc"
+// const str = "apc bpc dpc cpc"
+// const re = /[abc]pc/g
+// console.log(str.match(re))
+
+// const re1 = /[^0-9]/
+// const str1 = 'sd3'
+// console.log(str.match(re1))
+
+const reg = /<.+>/
