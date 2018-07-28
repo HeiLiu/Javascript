@@ -50,7 +50,7 @@ const p = new Promise((resolve, reject)=>{
     setTimeout(()=>{
         resolve('hello world');
     },1000)
-    // reject('我的天啊')
+    reject('我的天啊')
 }) 
 p.then((data)=>{
     console.log(data)
