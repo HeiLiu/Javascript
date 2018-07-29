@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>事件委托机制 了解一下</title>
+</head>
+
+<body>
+  <ul id="ul">
+    <li>111</li>
+    <li>222</li>
+    <li>333</li>
+    <li>444</li>
+    <li>555</li>
+  </ul>
+  <script>
+    window.onload = function () {
+      // var oUl = document.getElementById('ul')
+      // var aLi = oUl.getElementsByTagName('li')
+      // for(var i = 0, len = aLi.length; i < len; i++ ){
+      //   aLi[i].onclick = function () {
+      //     alert(i)  // 为什么会是5？
+      //     // alert(aLi[i].innerHTML)
+      //   }
+      // }
+      // 将事件委托到 oUl 上
+      var oUl = document.getElementById("ul");　　
+      oUl.onclick = function (ev) {　　　　
+        var ev = ev || window.event;　　　　
+        var target = ev.target || ev.srcElement;　　　　
+        if (target.nodeName.toLowerCase() == 'li') {
+          alert(target.nodeName)　　　　　　　
+          alert(target.innerHTML);　　　　
+        }　　
+      }
+    }
+  </script>
+</body>
+
+</html>
