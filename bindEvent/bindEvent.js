@@ -1,4 +1,5 @@
 function bindEvent(elem, type, selector, fn) {
+  // 当只传三个参数的时候  第三个selector给fn
   if( fn === null) {
     fn = selector
     selector = null
